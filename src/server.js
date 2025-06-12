@@ -6,7 +6,8 @@ import * as number from 'lib0/number'
 import { setupWSConnection } from './utils.js'
 
 const wss = new WebSocket.Server({ noServer: true })
-const host = process.env.HOST || 'localhost'
+
+// ✅ Removed host binding
 const port = number.parseInt(process.env.PORT || '1234')
 
 const server = http.createServer((_request, response) => {
@@ -17,15 +18,12 @@ const server = http.createServer((_request, response) => {
 wss.on('connection', setupWSConnection)
 
 server.on('upgrade', (request, socket, head) => {
-  // You may check auth of request here..
-  // Call `wss.HandleUpgrade` *after* you checked whether the client has access
-  // (e.g. by checking cookies, or url parameters).
-  // See https://github.com/websockets/ws#client-authentication
-  wss.handleUpgrade(request, socket, head, /** @param {any} ws */ ws => {
+  wss.handleUpgrade(request, socket, head, ws => {
     wss.emit('connection', ws, request)
   })
 })
 
-server.listen(port, host, () => {
-  console.log(`running at '${host}' on port ${port}`)
+// ✅ Listen on all interfaces
+server.listen(port, () => {
+  console.log(`✅ Server running on port ${port}`)
 })
