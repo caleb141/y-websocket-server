@@ -6,8 +6,8 @@ import * as number from 'lib0/number'
 import { setupWSConnection } from './utils.js'
 
 const wss = new WebSocket.Server({ noServer: true })
-//const host = process.env.HOST || 'localhost'
-const PORT = number.parseInt(process.env.PORT || '1234')
+//const host = process.env.HOST || '0.0.0.0'
+const port = number.parseInt(process.env.PORT || '1234')
 
 const server = http.createServer((_request, response) => {
   response.writeHead(200, { 'Content-Type': 'text/plain' })
@@ -26,9 +26,6 @@ server.on('upgrade', (request, socket, head) => {
   })
 })
 
-//server.listen(port, host, () => {
-//  console.log(`running at '${host}' on port ${port}`)
-//})
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+server.listen(port, '0.0.0.0', () => {
+  console.log(`running at '${host}' on port ${port}`)
+})
